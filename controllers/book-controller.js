@@ -1,4 +1,5 @@
 import Book from "../models/book.js"
+import Author from "../models/Author.js"
 
 
 const getAllBooks = async (req, res) => {
@@ -28,7 +29,7 @@ const getAllBooks = async (req, res) => {
 const getBookById = async (req, res) => {
   try {
     const bookId = req.params.id
-    const bookDetails = await Book.findById(bookId)
+    const bookDetails = await Book.findById(bookId).populate("author")
     if (!bookDetails) {
       return res.status(404).json({
         success: false,
@@ -143,11 +144,42 @@ const deleteBook = async (req, res) => {
   }
 }
 
+const createAuthor = async (req, res) => {
+  try {
+    const author = await Author.create(req.body)
+    return res.status(201).json({
+      success: true,
+      message: "Author created successfully",
+      author
+    })
+  } catch (error) {
+    console.log("Error creating author:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    })
+  }
+}
+
+const createNewBook = async (req, res) => {
+  try {
+
+  } catch (error) {
+    console.log("Error creating new book:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    })
+  }
+}
+
 // Export the controller functions
 export {
   getAllBooks,
   getBookById,
   createBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  createAuthor,
+  createNewBook
 };

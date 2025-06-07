@@ -6,6 +6,7 @@ import authRoutes from './routes/auth-routes.js';
 import homeRoutes from './routes/home-routes.js';
 import adminRoutes from './routes/admin-routes.js';
 import imageRoutes from './routes/image-routes.js';
+import productRoutes from './routes/product-routes.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/home', homeRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/image", imageRoutes);
+app.use("/api/products", productRoutes)
 
 app.listen(port, () => {
   console.log(`Server is now running on http://localhost:${port}`);

@@ -14,16 +14,22 @@ const authMiddleware = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     console.log(decodedToken);
-
     req.userInfo = decodedToken;
     next();
-
   } catch (error) {
-    return res.status(500).json({
+    // Check if the error is due to token expiration
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: "Token has expired, please login again"
+      });
+    }
+    // Handle other JWT errors (e.g., invalid token)
+    return res.status(401).json({
       success: false,
-      message: "Internal server error"
+      message: "Invalid token, please login again"
     });
   }
-}
+};
 
 export default authMiddleware;
